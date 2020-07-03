@@ -1,5 +1,5 @@
 import React from "react";
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const StyledButton = styled.button`
   background: ${props => props.selected ? "black" : "#ddd"};
@@ -9,7 +9,8 @@ const StyledButton = styled.button`
   color: ${props => props.disabled ? "grey" : props.selected ? "white" : "black"};
   padding: ${props => props.isLarge ? "0.5em 2em" : "0.25em 2em"};
   cursor: ${props => props.disabled ? "not-allowed" : "pointer"};
-`
+  min-width: 190px;
+`;
  
 const Button = ({ title, onClick, isLarge, selected, disabled }) => { 
   return (
