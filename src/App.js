@@ -1,24 +1,18 @@
 import React from 'react'
-import logo from './logo.svg'
-import './App.css'
+import Button from './components/Button'
 
 function App () {
+
+  const clickHandler = () => {
+    console.log('button clicked');
+  }
+
   return (
     <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
-      </header>
+      <Button title="okay" onClick={clickHandler} />
+      <Button title="selected" selected={true} onClick={clickHandler} />
+      <Button title="disabled" disabled={true} onClick={clickHandler} />
+      <Button title="isLarge" isLarge={true} onClick={clickHandler} />
     </div>
   )
 }
