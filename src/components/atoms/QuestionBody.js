@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import _ from 'lodash';
 import styled from 'styled-components';
 import Button from './Button';
@@ -31,8 +31,34 @@ const ResultWrapper = styled.div`
   align-items: center;
 `;
  
-const QuestionBody = ({ content, answers, onAnswerClick, isAnswered, isCorrect, moveNext }) => {
-  const shuffledAnswers = _.shuffle(answers);
+const QuestionBody = ({ content, answers, onAnswerClick, correctAnswer, moveNext }) => {
+  
+  const [isAnswered, setIsAnswered] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [selectedAnswer, setSelectedAnswer] = useState('');
+
+  useEffect(() => {
+    setIsAnswered(false);
+  }, [content]);
+  
+  const shuffledAnswers = useMemo(() => _.shuffle(answers), [answers]);
+
+  const handleAnswer = (answer) => {
+    if (isAnswered)
+      return;
+
+    setSelectedAnswer(answer);
+    
+    if (answer === correctAnswer) {
+      onAnswerClick(true);
+      setIsCorrect(true);
+    } else {
+      onAnswerClick(false);
+      setIsCorrect(false);
+    }
+
+    setIsAnswered(true);
+  }
 
   return (
     <Wrapper>
@@ -44,7 +70,10 @@ const QuestionBody = ({ content, answers, onAnswerClick, isAnswered, isCorrect, 
               <Button
                 key={index}
                 title={unescape(answer)}
-                onClick={() => onAnswerClick(answer)}
+                onClick={() => handleAnswer(answer)}
+                disabled={isAnswered ? answer !== correctAnswer && answer !== selectedAnswer : false}
+                selected={isAnswered ? answer === selectedAnswer : false}
+                highlight={isAnswered ? answer === correctAnswer && answer !== selectedAnswer : false}
               />
             )
           })
@@ -55,7 +84,7 @@ const QuestionBody = ({ content, answers, onAnswerClick, isAnswered, isCorrect, 
           isAnswered && isCorrect && (
             <>
               <h1>Correct!</h1>
-              <Button title="Next Question" isLarge={true} onClick={() => moveNext} />
+              <Button title="Next Question" isLarge={true} onClick={() => moveNext()} />
             </>
           )
         }
@@ -63,7 +92,7 @@ const QuestionBody = ({ content, answers, onAnswerClick, isAnswered, isCorrect, 
           isAnswered && !isCorrect && (
             <>
               <h1>Sorry!</h1>
-              <Button title="Next Question" isLarge={true} onClick={() => moveNext} />
+              <Button title="Next Question" isLarge={true} onClick={() => moveNext()} />
             </>
           )
         }

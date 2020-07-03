@@ -18,6 +18,9 @@ const Quiz = ({ data }) => {
   }
 
   const moveNext = () => {
+    if (curIndex === totalNum - 1)
+      return;
+
     setCurIndex(curIndex + 1);
   }
 
@@ -27,8 +30,8 @@ const Quiz = ({ data }) => {
       curIndex={curIndex}
       correctNumber={correctNumber}
       totalNum={totalNum}
-      setResult={() => setResult}
-      moveNext={() => moveNext}
+      setResult={setResult}
+      moveNext={moveNext}
     />
   )
 }
